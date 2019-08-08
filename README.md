@@ -1,7 +1,7 @@
 # mysql80_no_usui_hon
 MySQL 8.0の薄い本 配布用
 
- - EPUB（試験配布）※8.0.16版未対応
+ - EPUB（試験配布）※8.0.16版以降未対応
    - book.epub
  - PDF_ebook（電子版PDF）
    - book_ebook.pdf
