@@ -21,6 +21,7 @@ MySQL 8.0の薄い本 配布用
      - ラクスル等での印刷を想定
    - mysql80_thin_book_cover_cmyk.psd（表紙＝表4・表1データ）
    - mysql80_thin_book_cover_hyo23_cmyk.psd（表紙裏側＝表2・表3データ）
+     - 表紙・表紙裏側もラクスル等での印刷を想定
 
 ---
 
