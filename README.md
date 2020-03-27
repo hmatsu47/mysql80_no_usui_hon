@@ -16,7 +16,9 @@ MySQL 8.0の薄い本 配布用
    - book_ebook.pdf
  - PDF_print（印刷版PDF）
    - book_no_tombo_x1a.pdf（デジタルトンボなし）
+     - プリンタでの印刷→簡易製本を想定
    - book_x1a.pdf（デジタルトンボあり）
+     - ラクスル等での印刷を想定
    - mysql80_thin_book_cover_cmyk.psd（表紙＝表4・表1データ）
    - mysql80_thin_book_cover_hyo23_cmyk.psd（表紙裏側＝表2・表3データ）
 
