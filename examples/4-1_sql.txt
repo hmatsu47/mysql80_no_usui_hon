@@ -1,0 +1,54 @@
+CREATE DATABASE ctetest;
+USE ctetest;
+---
+CREATE TABLE order_detail (order_detail_id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT, order_id INT UNSIGNED NOT NULL, parent_order_detail_id INT UNSIGNED, product_name VARCHAR(100), cancel_flag INT UNSIGNED NOT NULL, INDEX (order_id), INDEX (parent_order_detail_id));
+INSERT INTO order_detail SET order_detail_id = 1, order_id = 1, parent_order_detail_id = NULL, product_name='車両本体 Sグレード', cancel_flag = 0;
+---
+INSERT INTO order_detail SET order_detail_id = 2, order_id = 1, parent_order_detail_id = 1, product_name='セーフティーパッケージ', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 3, order_id = 1, parent_order_detail_id = 2, product_name='衝突回避ブレーキシステム', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 4, order_id = 1, parent_order_detail_id = 2, product_name='追加エアバッグセット', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 5, order_id = 1, parent_order_detail_id = 3, product_name='サイドエアバッグ', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 6, order_id = 1, parent_order_detail_id = 3, product_name='カーテンエアバッグ', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 7, order_id = 1, parent_order_detail_id = 1, product_name='18インチセット', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 8, order_id = 1, parent_order_detail_id = 7, product_name='225/40R18ラジアルタイヤ', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 9, order_id = 1, parent_order_detail_id = 7, product_name='18インチアルミホイール', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 10, order_id = 1, parent_order_detail_id = 1, product_name='フロアマット', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 11, order_id = 2, parent_order_detail_id = NULL, product_name='車両本体 Bグレード', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 12, order_id = 2, parent_order_detail_id = 11, product_name='サイドバイザー', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 13, order_id = 2, parent_order_detail_id = 11, product_name='フロアマット', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 14, order_id = 3, parent_order_detail_id = NULL, product_name='車両本体 Xグレード', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 15, order_id = 3, parent_order_detail_id = 14, product_name='スタイリッシュパッケージ', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 16, order_id = 3, parent_order_detail_id = 15, product_name='18インチセット', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 17, order_id = 3, parent_order_detail_id = 16, product_name='225/40R18ラジアルタイヤ', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 18, order_id = 3, parent_order_detail_id = 16, product_name='18インチアルミホイール', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 19, order_id = 3, parent_order_detail_id = 15, product_name='エアロセットB', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 20, order_id = 3, parent_order_detail_id = 19, product_name='フロントアンダースポイラー', cancel_flag = 0;
+INSERT INTO order_detail SET order_detail_id = 21, order_id = 3, parent_order_detail_id = 19, product_name='サイドステップ', cancel_flag = 0;
+---
+INSERT INTO order_detail SET order_detail_id = 22, order_id = 3, parent_order_detail_id = 19, product_name='リアスポイラー', cancel_flag = 0;
+SELECT * FROM order_detail;
+WITH RECURSIVE product_order AS
+(
+  SELECT detail_id, parent_id, product_name, cancel_flag
+   FROM ctetest.order_detail
+    WHERE order_id = 3 AND product_name = 'スタイリッシュパッケージ'
+  UNION ALL
+  SELECT child.detail_id, child.parent_id, child.product_name, child.cancel_flag
+   FROM ctetest.order_detail AS child, product_order
+    WHERE product_order.detail_id = child.parent_id
+)
+SELECT * FROM product_order;
+WITH RECURSIVE product_order AS
+(
+  SELECT detail_id, parent_id, product_name, cancel_flag
+   FROM ctetest.order_detail
+    WHERE order_id = 3 AND product_name = 'スタイリッシュパッケージ'
+  UNION ALL
+  SELECT child.detail_id, child.parent_id, child.product_name, child.cancel_flag
+   FROM ctetest.order_detail AS child, product_order
+    WHERE product_order.detail_id = child.parent_id
+)
+UPDATE ctetest.order_detail
+ SET cancel_flag = 1
+  WHERE detail_id IN
+   (SELECT detail_id FROM product_order);

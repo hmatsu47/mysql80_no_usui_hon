@@ -1,0 +1,13 @@
+CREATE TABLE def_test (org_str VARCHAR(100), sha_str VARCHAR(64) DEFAULT (SHA2(org_str, 256)));
+INSERT INTO def_test SET org_str='abc';
+---
+INSERT INTO def_test SET org_str='123';
+INSERT INTO def_test SET org_str='XYZ';
+---
+SELECT * FROM def_test;
+CREATE TABLE def_test2 (val INT NOT NULL, calc BIGINT DEFAULT (val*(val+1)));
+INSERT INTO def_test2 SET val=10;
+---
+INSERT INTO def_test2 SET val=100;
+---
+SELECT * FROM def_test2;

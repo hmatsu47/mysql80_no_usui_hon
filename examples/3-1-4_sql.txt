@@ -1,0 +1,10 @@
+CREATE TABLE di_test (id INT PRIMARY KEY AUTO_INCREMENT, val1 INT, val2 INT, INDEX idx_val(val1 ASC, val2 ASC));
+INSERT INTO di_test SET val1=FLOOR(RAND()*100), val2=FLOOR(RAND()*100);
+---
+※計50行分実行する。
+---
+SELECT * FROM di_test ORDER BY id;
+EXPLAIN SELECT * FROM di_test ORDER BY val1 ASC, val2 ASC;
+EXPLAIN SELECT * FROM di_test ORDER BY val1 ASC, val2 DESC;
+ALTER TABLE di_test DROP INDEX idx_val, ADD INDEX idx_val(val1 ASC, val2 DESC);
+EXPLAIN SELECT * FROM di_test ORDER BY val1 ASC, val2 DESC;

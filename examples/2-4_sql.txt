@@ -1,0 +1,23 @@
+GRANT SELECT ON test.sales_person TO 'hmatsu47'@'localhost';
+CREATE ROLE 'account_admin';
+GRANT SELECT, INSERT, UPDATE, DELETE ON test.sales_person TO 'account_admin';
+GRANT 'account_admin' TO 'hmatsu47'@'localhost';
+QUIT
+---
+CREATE DATABASE test CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+---
+USE test;
+---
+CREATE TABLE sales_person (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+INSERT INTO sales_person SET name='田中';
+INSERT INTO sales_person SET name='坂井';
+INSERT INTO sales_person SET name='富田';
+INSERT INTO sales_person SET name='三谷';
+---
+SELECT * FROM sales_person;
+INSERT INTO sales_person SET name='梶⼭';
+SET ROLE 'account_admin';
+INSERT INTO sales_person SET name='梶⼭';
