@@ -1,0 +1,6 @@
+early-plugin-load=keyring_file.so
+keyring_file_data=/var/lib/mysql-keyring/keyring
+innodb_doublewrite=0
+# ダブルライトを無効にしないとダブルライトバッファに平⽂で書き出されてしまうため。
+innodb_redo_log_encrypt=1
+innodb_undo_log_encrypt=1
