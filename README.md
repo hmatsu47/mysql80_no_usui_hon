@@ -19,6 +19,8 @@ MySQL 8.0の薄い本 配布用
    - book_x1a.pdf（デジタルトンボあり）
    - mysql80_thin_book_cover_cmyk.psd（表紙＝表4・表1データ）
    - mysql80_thin_book_cover_hyo23_cmyk.psd（表紙裏側＝表2・表3データ）
+ - examples（実行例・サンプル）
+   - （Linuxコマンドライン・SQL実行例がテキストファイルで入っています）
 
 ---
 

@@ -1,0 +1,6 @@
+yum-config-manager --disable mysql57-community
+yum-config-manager --enable mysql80-community
+yum install mysql-shell
+mysqlsh -u root -S /var/lib/mysql/mysql.sock
+---
+util.checkForServerUpgrade()
