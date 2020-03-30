@@ -1,0 +1,5 @@
+server-id=1
+binlog_format=MIXED
+# バイナリログ形式をMIXEDに変更しているのは暗号化の確認をしやすくするため。実運⽤ではROW推奨。
+binlog_encryption=ON
+binlog_rotate_encryption_master_key_at_startup=ON

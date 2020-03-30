@@ -1,0 +1,6 @@
+server-id=2
+binlog_format=MIXED
+binlog_encryption=ON
+binlog_rotate_encryption_master_key_at_startup=ON
+super_read_only
+#skip-slave-start
