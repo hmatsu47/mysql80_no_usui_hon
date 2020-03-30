@@ -1,0 +1,65 @@
+CREATE TABLE shizuoka (id INT PRIMARY KEY AUTO_INCREMENT,
+ctv_name VARCHAR(50) NOT NULL,
+population INT NOT NULL,
+ctv_type INT NOT NULL) ENGINE innodb;
+INSERT INTO shizuoka SET ctv_name='静岡市', population=704043, ctv_type=1;
+---
+INSERT INTO shizuoka SET ctv_name='浜松市', population=804989, ctv_type=1;
+INSERT INTO shizuoka SET ctv_name='沼津市', population=196530, ctv_type=3;
+INSERT INTO shizuoka SET ctv_name='熱海市', population=37225, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='三島市', population=110505, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='富士宮市', population=133290, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='伊東市', population=69597, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='島田市', population=98909, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='富士市', population=254203, ctv_type=3;
+INSERT INTO shizuoka SET ctv_name='磐田市', population=169931, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='焼津市', population=140189, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='掛川市', population=117605, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='藤枝市', population=145789, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='御殿場市', population=88494, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='袋井市', population=87938, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='下田市', population=21937, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='裾野市', population=52332, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='湖西市', population=59861, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='伊豆市', population=31089, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='御前崎市', population=32996, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='菊川市', population=47850, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='伊豆の国市', population=49082, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='牧之原市', population=46102, ctv_type=4;
+INSERT INTO shizuoka SET ctv_name='賀茂郡東伊豆町', population=12418, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='賀茂郡河津町', population=7339, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='賀茂郡南伊豆町', population=8456, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='賀茂郡松崎町', population=6768, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='賀茂郡西伊豆町', population=8083, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='田方郡函南町', population=37901, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='駿東郡清水町', population=32606, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='駿東郡長泉町', population=43185, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='駿東郡小山町', population=18815, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='榛原郡吉田町', population=29679, ctv_type=5;
+INSERT INTO shizuoka SET ctv_name='榛原郡川根本町', population=7002, ctv_type=5;
+---
+INSERT INTO shizuoka SET ctv_name='周智郡森町', population=18507, ctv_type=5;
+SELECT * FROM shizuoka;
+SELECT RANK() OVER (ORDER BY population DESC) AS pop_rank,
+ctv_name, population FROM shizuoka;
+SELECT ctv_type,
+RANK() OVER (PARTITION BY ctv_type ORDER BY population DESC)
+ AS pop_rank,
+ctv_name, population FROM shizuoka;
+SELECT RANK() OVER w AS pop_rank,
+ctv_name, population,
+(SUM(population) OVER w / SUM(population) OVER w2)*100
+ AS sum_pct,
+FORMAT(CUME_DIST() OVER w, 3) AS c_dist FROM shizuoka
+ WINDOW w AS (ORDER BY population DESC), w2 AS ();
+SELECT s.pop_rank, s.ctv_name, s.population,
+s.sum_pct, s.c_dist FROM
+(
+  SELECT RANK() OVER w AS pop_rank,
+  ctv_name, population,
+  (SUM(population) OVER w / SUM(population) OVER w2)*100
+   AS sum_pct,
+  FORMAT(CUME_DIST() OVER w, 3) AS c_dist FROM shizuoka
+   WINDOW w AS (ORDER BY population DESC), w2 AS ()
+) AS s
+ WHERE s.c_dist <= 0.2;
