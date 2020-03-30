@@ -22,8 +22,8 @@ MySQL 8.0の薄い本 配布用
    - mysql80_thin_book_cover_cmyk.psd（表紙＝表4・表1データ）
    - mysql80_thin_book_cover_hyo23_cmyk.psd（表紙裏側＝表2・表3データ）
      - 表紙・表紙裏側もラクスル等での印刷を想定
-		 - examples（実行例・サンプル）
-		   - （Linuxコマンドライン・SQL実行例がテキストファイルで入っています）
+ - examples（実行例・サンプル）
+   - （Linuxコマンドライン・SQL実行例がテキストファイルで入っています）
 ---
 
  - masterブランチがリリース済みの最新版です。ほかのブランチはMySQL各バージョン（8.0.16など）に対応します。
