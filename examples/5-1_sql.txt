@@ -1,0 +1,28 @@
+CREATE TABLE agg_test (id INT PRIMARY KEY AUTO_INCREMENT, j_key VARCHAR(20) UNIQUE NOTNULL, j_val VARCHAR(100));
+INSERT INTO agg_test SET j_key='NEC', j_val='PC-8801';
+---
+INSERT INTO agg_test SET j_key='FUJITSU', j_val='FM-8';
+INSERT INTO agg_test SET j_key='SHARP', j_val='MZ-2000';
+INSERT INTO agg_test SET j_key='HITACHI', j_val='BASIC MASTER L3';
+---
+SELECT id, JSON_OBJECTAGG(j_key, j_val) AS old_pc FROM agg_test GROUP BY id ORDER BY id;
+---
+CREATE TABLE storage_test (id INT PRIMARY KEY AUTO_INCREMENT, j_obj JSON);
+INSERT INTO storage_test SET j_obj=JSON_OBJECT('corp', 'NEC', 'pc', 'PC-8801');
+---
+INSERT INTO storage_test SET j_obj=JSON_OBJECT('corp', 'FUJITSU', 'pc', 'FM-8');
+INSERT INTO storage_test SET j_obj=JSON_OBJECT('corp', 'SHARP', 'pc', 'MZ-2000');
+INSERT INTO storage_test SET j_obj=JSON_OBJECT('corp', 'HITACHI', 'pc', 'BASIC MASTER L3');
+---
+SELECT *, JSON_STORAGE_SIZE(j_obj) FROM storage_test;
+UPDATE storage_test SET j_obj=JSON_REPLACE(j_obj, '$.pc', 'MZ-80B') WHERE id=3;
+SELECT *, JSON_STORAGE_FREE(j_obj) FROM storage_test;
+---
+SELECT * FROM JSON_TABLE(
+  '[{"name":"⻘⽊","dept":"IT 事業部"},{"name":"前⽥","dept":"コンサル事業部"},{"name":"⼭本","dept":["IT 事業部","コンサル事業部"]}]',
+  "$[*]"
+  COLUMNS(
+    name VARCHAR(40) PATH "$.name",
+    dept VARCHAR(60) PATH "$.dept"
+  )
+) AS tbl_test;
