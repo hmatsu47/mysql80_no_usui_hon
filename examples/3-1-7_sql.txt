@@ -1,0 +1,20 @@
+CREATE DATABASE check_test;
+USE check_test;
+---
+CREATE TABLE t1(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  prefecture VARCHAR(4) NOT NULL,
+  city_town_village VARCHAR(10),
+  ward VARCHAR(10),
+  CONSTRAINT ctv_ward_blank CHECK (
+    (prefecture = '東京都' AND city_town_village IS NULL AND ward IS NOT NULL) OR
+    (prefecture = '東京都' AND city_town_village IS NOT NULL AND ward IS NULL) OR
+    (prefecture <> '東京都' AND city_town_village IS NOT NULL)));
+INSERT INTO t1 SET prefecture = '東京都', ward = '千代田区';
+INSERT INTO t1 SET prefecture = '東京都', city_town_village = '八王子市';
+INSERT INTO t1 SET prefecture = '愛知県', city_town_village = '豊田市';
+INSERT INTO t1 SET prefecture = '愛知県', city_town_village = '名古屋市', ward = '中区';
+INSERT INTO t1 SET prefecture = '東京都', city_town_village = '町田市', ward = '多摩区';
+INSERT INTO t1 SET prefecture = '東京都';
+INSERT INTO t1 SET prefecture = '愛知県';
+SELECT * FROM t1 ORDER BY id;

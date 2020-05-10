@@ -1,0 +1,79 @@
+※クライアント1で実行。
+CREATE DATABASE skiplock_test;
+---
+USE skiplock_test;
+CREATE TABLE seat (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  flight_date DATE NOT NULL,
+  flight_number VARCHAR(10) NOT NULL,
+  seat_number VARCHAR(10) NOT NULL,
+  reserved BOOLEAN NOT NULL DEFAULT false,
+  UNIQUE (flight_date, flight_number, seat_number));
+---
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A2';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A3';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A4';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A5';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A6';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A7';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A8';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A9';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A10';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A11';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A12';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'A13';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C2';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C3';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C4';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C5';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C6';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C7';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C8';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C9';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C10';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C11';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C12';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'C13';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H1';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H2';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H3';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H4';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H5';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H6';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H7';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H8';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H9';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H10';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H11';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H12';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'H13';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K1';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K2';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K3';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K4';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K5';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K6';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K7';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K8';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K9';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K10';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K11';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K12';
+INSERT INTO seat SET flight_date = '2020-05-15', flight_number = 'RAC 801', seat_number = 'K13';
+---
+SELECT * FROM seat ORDER BY id;
+START TRANSACTION;
+SELECT * FROM seat WHERE flight_date = ’2020-05-15’ AND flight_number = ’RAC 801’
+  AND seat_number = ’K3’ AND reserved IS false FOR UPDATE;
+---
+※クライアント2で実行。
+USE skiplock_test;
+START TRANSACTION;
+SELECT * FROM seat WHERE flight_date = ’2020-05-15’ AND flight_number = ’RAC 801’
+  AND seat_number = ’K3’ AND reserved IS false FOR UPDATE NOWAIT;
+---
+※クライアント3で実行。
+USE skiplock_test;
+START TRANSACTION;
+SELECT * FROM seat WHERE flight_date = ’2020-05-15’ AND flight_number = ’RAC 801’
+  AND seat_number LIKE ’_3’ AND reserved IS false FOR UPDATE SKIP LOCKED;

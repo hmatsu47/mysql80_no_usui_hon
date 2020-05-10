@@ -1,0 +1,16 @@
+CREATE DATABASE autoinc_test;
+USE autoinc_test;
+CREATE TABLE t1 (id int(10) PRIMARY KEY AUTO_INCREMENT, name VARCHAR(100)) ENGINE=innodb;
+INSERT INTO t1 SET name = ’first’;
+INSERT INTO t1 SET name = ’second’;
+INSERT INTO t1 SET name = ’third’;
+SELECT * FROM t1;
+DELETE FROM t1 WHERE id = 3;
+QUIT
+---
+systemctl restart mysqld.service
+---
+USE autoinc_test;
+SELECT * FROM t1;
+INSERT INTO t1 SET name = ’fourth’;
+SELECT * FROM t1;

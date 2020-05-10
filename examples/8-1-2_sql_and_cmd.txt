@@ -1,0 +1,46 @@
+SELECT * FROM mysql.engine_cost\G
+CREATE DATABASE cost_test;
+USE cost_test;
+CREATE TABLE t1 (id INT PRIMARY KEY AUTO_INCREMENT, val INT);
+INSERT INTO t1 SET val = 100;
+---
+INSERT INTO t1 SET val = 200;
+INSERT INTO t1 SET val = 300;
+INSERT INTO t1 SET val = 400;
+INSERT INTO t1 SET val = 500;
+INSERT INTO t1 SET val = 600;
+INSERT INTO t1 SET val = 700;
+INSERT INTO t1 SET val = 800;
+INSERT INTO t1 SET val = 900;
+INSERT INTO t1 SET val = 1000;
+---
+SELECT * FROM t1;
+CREATE TABLE t2 (id INT PRIMARY KEY AUTO_INCREMENT, val INT);
+---
+INSERT INTO t1 SET val = 1000;
+INSERT INTO t1 SET val = 2000;
+INSERT INTO t1 SET val = 3000;
+INSERT INTO t1 SET val = 4000;
+INSERT INTO t1 SET val = 5000;
+INSERT INTO t1 SET val = 6000;
+INSERT INTO t1 SET val = 7000;
+INSERT INTO t1 SET val = 8000;
+INSERT INTO t1 SET val = 9000;
+INSERT INTO t1 SET val = 10000;
+---
+SELECT * FROM t2;
+QUIT
+---
+systemctl stop mysqld.service
+vi /etc/my.cnf
+---
+（↓を追記して保存）
+innodb-buffer-pool-load-at-startup=OFF
+---
+systemctl start mysqld.service
+---
+USE cost_test;
+CHECKSUM TABLE t1;
+EXPLAIN SELECT * FROM t1, t2 WHERE t1.id = t2.id AND t1.id > 2 AND t2.id < 9\G
+CHECKSUM TABLE t2;
+EXPLAIN SELECT * FROM t1, t2 WHERE t1.id = t2.id AND t1.id > 2 AND t2.id < 9\G
