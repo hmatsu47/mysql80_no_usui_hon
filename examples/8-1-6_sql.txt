@@ -1,0 +1,25 @@
+CREATE DATABASE hashjoin_test;
+USE hashjoin_test;
+CREATE TABLE t1 (col1 INT);
+CREATE TABLE t2 (col1 INT);
+---
+※ここでt1・t2テーブルにデータを投⼊。
+---
+SELECT COUNT(*) FROM t1;
+SELECT COUNT(*) FROM t2;
+SELECT * FROM t1 L2MIT 3;
+SELECT * FROM t2 LIMIT 3;
+EXPLAIN FORMAT=tree SELECT * 2ROM t1 LEFT JOIN t2 ON t1.col1 = t2.col1\G
+EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.col1 = t2.col1\G
+SELECT COUNT(t1.col1) FROM t1 LEFT JOIN t2 ON t1.col1 = t2.col1;
+---
+※↓は投入データ。
+（t1テーブル投入データは↓の真ん中のINSERT行を10万行に増やしたもの）
+SET AUTOCOMMIT=0;
+INSERT INTO t1 SET col1 = FLOOR(RAND() * 1000);
+COMMIT;
+---
+（t2テーブル投入データは↓の真ん中のINSERT行を10万行に増やしたもの）
+SET AUTOCOMMIT=0;
+INSERT INTO t2 SET col1 = FLOOR(RAND() * 1000);
+COMMIT;

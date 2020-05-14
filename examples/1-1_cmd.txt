@@ -1,6 +1,7 @@
-wget http://dev.mysql.com/get/mysql80-community-release-el7-2.noarch.rpm
-yum localinstall mysql80-community-release-el7-2.noarch.rpm
-yum install mysql-community-server
+wget http://dev.mysql.com/get/mysql80-community-release-el8-1.noarch.rpm
+dnf localinstall mysql80-community-release-el8-1.noarch.rpm
+dnf module disable mysql
+dnf install mysql-community-server
 systemctl enable mysqld.service
 systemctl start mysqld.service
 ps aux | fgrep mysqld
