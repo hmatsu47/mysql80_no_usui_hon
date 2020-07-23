@@ -1,0 +1,144 @@
+CREATE DATABASE multitable_test;
+USE multitable_test;
+---
+CREATE TABLE t1 (
+id int NOT NULL AUTO_INCREMENT,
+‘key‘ int NOT NULL,
+PRIMARY KEY (id),
+KEY ‘key‘ (‘key‘)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+---
+CREATE TABLE t2 (
+id int NOT NULL AUTO_INCREMENT,
+val int NOT NULL,
+‘key‘ int NOT NULL,
+PRIMARY KEY (id),
+KEY valkey (val,‘key‘)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+---
+※以下のデータをMySQL Workbench等で投入。
+mysql> SELECT * FROM t1 ORDER BY id;
++----+-----+
+| id | key |
++----+-----+
+|  1 |  10 |
+|  2 |   8 |
+|  3 |   2 |
+|  4 |   7 |
+|  5 |   9 |
+|  6 |   3 |
+|  7 |   6 |
+|  8 |   4 |
+|  9 |   8 |
+| 10 |   9 |
+| 11 |  10 |
+| 12 |   1 |
+| 13 |   6 |
+| 14 |   7 |
+| 15 |   5 |
+| 16 |   2 |
+| 17 |   6 |
+| 18 |   8 |
+| 19 |  10 |
+| 20 |  10 |
+| 21 |  35 |
+| 22 |  27 |
+| 23 |  33 |
+| 24 |  16 |
+| 25 |  29 |
+| 26 |  30 |
+| 27 |  36 |
+| 28 |  40 |
+| 29 |  40 |
+| 30 |  30 |
+| 31 |  20 |
+| 32 |  15 |
+| 33 |  14 |
+| 34 |  18 |
+| 35 |  22 |
+| 36 |  17 |
+| 37 |  19 |
+| 38 |  24 |
+| 39 |  25 |
+| 40 |  33 |
+| 41 |  48 |
+| 42 |  50 |
+| 43 |  44 |
+| 44 |  50 |
+| 45 |   5 |
+| 46 |  40 |
+| 47 |  34 |
+| 48 |  42 |
+| 49 |   2 |
+| 50 |  12 |
++----+-----+
+50 rows in set (0.00 sec)
+
+mysql> SELECT * FROM t2 ORDER BY id;
++----+-----+-----+
+| id | val | key |
++----+-----+-----+
+|  1 | 100 |  48 |
+|  2 |  60 |  23 |
+|  3 |  10 |  35 |
+|  4 |  20 |  40 |
+|  5 |  80 |  21 |
+|  6 |  30 |  42 |
+|  7 |  90 |  22 |
+|  8 |  40 |  24 |
+|  9 |  70 |  11 |
+| 10 | 100 |   1 |
+| 11 |  10 |  50 |
+| 12 |  80 |  18 |
+| 13 |  70 |  17 |
+| 14 |  10 |  16 |
+| 15 |  60 |  27 |
+| 16 |  40 |  41 |
+| 17 |  70 |   2 |
+| 18 | 100 |  36 |
+| 19 |  10 |  25 |
+| 20 |  50 |  10 |
+| 21 |  90 |  26 |
+| 22 |  70 |   4 |
+| 23 |  50 |   3 |
+| 24 |  90 |  47 |
+| 25 |  30 |  12 |
+| 26 |  90 |   5 |
+| 27 |  20 |  32 |
+| 28 |  10 |  49 |
+| 29 | 100 |  19 |
+| 30 |  30 |  31 |
+| 31 |  20 |  46 |
+| 32 | 100 |  20 |
+| 33 |  10 |   9 |
+| 34 |  40 |  34 |
+| 35 |  50 |  15 |
+| 36 |  40 |  39 |
+| 37 | 100 |  30 |
+| 38 |  60 |  38 |
+| 39 |  20 |   7 |
+| 40 |  30 |  44 |
+| 41 |  20 |  28 |
+| 42 |  90 |  43 |
+| 43 |  70 |   8 |
+| 44 |  60 |  33 |
+| 45 |  10 |  29 |
+| 46 |  20 |  45 |
+| 47 |  10 |  13 |
+| 48 | 100 |  37 |
+| 49 |  10 |  14 |
+| 50 |  80 |   6 |
++----+-----+-----+
+50 rows in set (0.00 sec)
+---
+EXPLAIN UPDATE t1 SET t1.key = 0 WHERE t1.key IN (SELECT t2.key FROM t2 WHERE t2.val IN (40, 60, 100))\G
+---
+※t1, t2テーブルの元データをそれぞれ「INSERT INTO ... SELECT」で倍々に増やしていき、約10万行にする。
+---
+SET AUTOCOMMIT=0;
+UPDATE t1 SET t1.key = 0 WHERE t1.key IN (SELECT /*+ SUBQUERY(INTOEXISTS) */ t2.key FROM t2 WHERE t2.val IN (40, 60, 100));
+ROLLBACK;
+---
+SET AUTOCOMMIT=0;
+UPDATE t1 SET t1.key = 0 WHERE t1.key IN (SELECT t2.key FROM t2 WHERE t2.val IN (40, 60, 100));
+ROLLBACK;
